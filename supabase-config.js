@@ -1,4 +1,4 @@
 window.TS_SUPABASE = {
-  url: "",
-  anonKey: ""
+  url: "https://hfnuzixqdwgabmqvtydt.supabase.co",
+  anonKey: "COLE_AQUI_SUA_PUBLISHABLE_KEY"
 };
