@@ -44,28 +44,14 @@
     dl.innerHTML=values.map(v=>`<option value="${String(v).replace(/"/g,'&quot;')}"></option>`).join('');
     return dl;
   }
-  function attachList(input,id,values){
-    if(!input)return;
-    makeDatalist(id,values);
-    input.setAttribute('list',id);
-    input.setAttribute('autocomplete','off');
-  }
+  function attachList(input,id,values){if(!input)return;makeDatalist(id,values);input.setAttribute('list',id);input.setAttribute('autocomplete','off')}
   function selectToFreeInput(id,listId,values){
-    const el=document.getElementById(id);
-    if(!el)return null;
+    const el=document.getElementById(id);if(!el)return null;
     if(el.tagName==='INPUT'){attachList(el,listId,values);return el}
-    const input=document.createElement('input');
-    input.id=id;input.className=el.className||'field';input.value=el.value||values[0]||'';
-    input.placeholder='Selecione ou digite';
-    el.replaceWith(input);
-    attachList(input,listId,values);
-    return input;
+    const input=document.createElement('input');input.id=id;input.className=el.className||'field';input.value=el.value||values[0]||'';input.placeholder='Selecione ou digite';el.replaceWith(input);attachList(input,listId,values);return input;
   }
   function installAdminSmartOptions(){
-    const brand=document.getElementById('brand');
-    const model=document.getElementById('model');
-    if(!brand||!model)return;
-
+    const brand=document.getElementById('brand'),model=document.getElementById('model');if(!brand||!model)return;
     const models={
       'Chevrolet':['Onix','Onix Plus','Tracker','Montana','S10','Spin','Cruze','Equinox','Trailblazer'],
       'Volkswagen':['Polo','Virtus','Nivus','T-Cross','Taos','Saveiro','Amarok','Jetta','Tiguan'],
@@ -82,82 +68,58 @@
       'Audi':['A3','A4','A5','Q3','Q5','Q7'],
       'Kia':['Cerato','Sportage','Sorento','Stonic','Carnival'],
       'Mitsubishi':['ASX','Eclipse Cross','Outlander','L200 Triton','Pajero Sport'],
-      'Peugeot':['208','2008','3008','Partner'],
-      'Citroën':['C3','C3 Aircross','C4 Cactus','Basalt'],
-      'Volvo':['XC40','XC60','XC90','S60'],
-      'Caoa Chery':['Tiggo 5X','Tiggo 7','Tiggo 8','Arrizo 6'],
-      'BYD':['Dolphin','Dolphin Mini','Song Plus','Song Pro','Yuan Plus','Seal','King'],
-      'GWM':['Haval H6','Haval H6 GT','Ora 03','Tank 300'],
-      'Porsche':['Macan','Cayenne','911','718','Panamera','Taycan'],
-      'Land Rover':['Range Rover Evoque','Discovery Sport','Defender','Range Rover Sport'],
-      'Ram':['Rampage','1500','2500','3500']
+      'Peugeot':['208','2008','3008','Partner'],'Citroën':['C3','C3 Aircross','C4 Cactus','Basalt'],
+      'Volvo':['XC40','XC60','XC90','S60'],'Caoa Chery':['Tiggo 5X','Tiggo 7','Tiggo 8','Arrizo 6'],
+      'BYD':['Dolphin','Dolphin Mini','Song Plus','Song Pro','Yuan Plus','Seal','King'],'GWM':['Haval H6','Haval H6 GT','Ora 03','Tank 300'],
+      'Porsche':['Macan','Cayenne','911','718','Panamera','Taycan'],'Land Rover':['Range Rover Evoque','Discovery Sport','Defender','Range Rover Sport'],'Ram':['Rampage','1500','2500','3500']
     };
-    const brands=Object.keys(models).concat(['Suzuki','Subaru','Mini','Lexus','Jaguar','JAC','Chery']).sort();
-    attachList(brand,'vehicleBrandOptions',brands);
-
-    function updateModels(){
-      const typed=brand.value.trim().toLowerCase();
-      const key=Object.keys(models).find(k=>k.toLowerCase()===typed);
-      const values=key?models[key]:[...new Set(Object.values(models).flat())].sort();
-      attachList(model,'vehicleModelOptions',values);
-    }
-    brand.addEventListener('input',updateModels);
-    brand.addEventListener('change',updateModels);
-    updateModels();
-
-    attachList(document.getElementById('version'),'vehicleVersionOptions',[
-      '1.0','1.0 Flex','1.0 Turbo','1.3 Flex','1.3 Turbo','1.4 Turbo','1.5','1.5 Turbo','1.6 Flex','1.8 Flex','2.0 Flex','2.0 Turbo','2.0 Diesel','Híbrido','Elétrico'
-    ]);
-
-    const currentYear=new Date().getFullYear();
-    const years=[];for(let y=currentYear+1;y>=1980;y--)years.push(String(y));
-    attachList(document.getElementById('year'),'vehicleYearOptions',years);
-    attachList(document.getElementById('modelYear'),'vehicleModelYearOptions',years);
-
+    attachList(brand,'vehicleBrandOptions',Object.keys(models).concat(['Suzuki','Subaru','Mini','Lexus','Jaguar','JAC','Chery']).sort());
+    function updateModels(){const typed=brand.value.trim().toLowerCase(),key=Object.keys(models).find(k=>k.toLowerCase()===typed),values=key?models[key]:[...new Set(Object.values(models).flat())].sort();attachList(model,'vehicleModelOptions',values)}
+    brand.addEventListener('input',updateModels);brand.addEventListener('change',updateModels);updateModels();
+    attachList(document.getElementById('version'),'vehicleVersionOptions',['1.0','1.0 Flex','1.0 Turbo','1.3 Flex','1.3 Turbo','1.4 Turbo','1.5','1.5 Turbo','1.6 Flex','1.8 Flex','2.0 Flex','2.0 Turbo','2.0 Diesel','Híbrido','Elétrico']);
+    const currentYear=new Date().getFullYear(),years=[];for(let y=currentYear+1;y>=1980;y--)years.push(String(y));
+    attachList(document.getElementById('year'),'vehicleYearOptions',years);attachList(document.getElementById('modelYear'),'vehicleModelYearOptions',years);
     selectToFreeInput('transmission','vehicleTransmissionOptions',['Automático','Manual','CVT','Automatizado','Automático de 6 marchas','Automático de 8 marchas','Automático de 9 marchas']);
     selectToFreeInput('fuel','vehicleFuelOptions',['Flex','Gasolina','Diesel','Híbrido','Híbrido plug-in','Elétrico','Etanol']);
     attachList(document.getElementById('color'),'vehicleColorOptions',['Preto','Branco','Prata','Cinza','Vermelho','Azul','Verde','Marrom','Bege','Dourado','Amarelo','Laranja']);
   }
 
-  function installAdminPromoField(){
-    const price=document.getElementById('price');
-    if(!price||document.getElementById('promoPrice')) return;
-    const holder=price.parentElement;
-    if(!holder) return;
-    const promo=document.createElement('div');
-    promo.innerHTML='<label>Preço promocional <span style="color:#888;font-size:11px">(opcional)</span></label><input class="field" id="promoPrice" placeholder="R$ 109.900"><div style="font-size:11px;color:#bda56c;margin-top:-8px;margin-bottom:12px">Se preenchido, o preço normal aparecerá riscado no site.</div>';
-    holder.insertAdjacentElement('afterend',promo);
-
-    const originalForm=window.formDataWithImages;
-    if(typeof originalForm==='function'){
-      window.formDataWithImages=function(images){
-        const data=originalForm(images);
-        data.promo_price=(document.getElementById('promoPrice')?.value||'').trim();
-        return data;
-      };
+  function removeLegacyPhotoUrlField(){
+    const image=document.getElementById('image');
+    if(image){
+      const parent=image.parentElement;
+      const prev=image.previousElementSibling;
+      if(prev&&/URL da foto/i.test(prev.textContent||''))prev.remove();
+      image.remove();
+      if(parent&&parent.children.length===0)parent.remove();
     }
-    const originalEdit=window.editV;
-    if(typeof originalEdit==='function'){
-      window.editV=function(id){
-        originalEdit(id);
-        list().then(all=>{
-          const v=all.find(x=>String(x.id)===String(id));
-          const field=document.getElementById('promoPrice');
-          if(field) field.value=v?.promo_price||'';
-          const brand=document.getElementById('brand');
-          if(brand)brand.dispatchEvent(new Event('change'));
-        }).catch(()=>{});
-      };
-    }
-    const originalClear=window.clearForm;
-    if(typeof originalClear==='function'){
-      window.clearForm=function(){
-        originalClear();
-        const field=document.getElementById('promoPrice');
-        if(field) field.value='';
-      };
-    }
+    [...document.querySelectorAll('label')].forEach(l=>{if(/URL da foto/i.test(l.textContent||'')){const next=l.nextElementSibling;if(next&&next.tagName==='INPUT')next.remove();l.remove()}});
   }
-  window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{installAdminSmartOptions();installAdminPromoField()},0));
+
+  function installUnlimitedPhotos(){
+    removeLegacyPhotoUrlField();
+    const input=document.getElementById('photos');if(!input)return;
+    input.setAttribute('multiple','multiple');
+    const upload=input.closest('.upload');
+    if(upload){const note=upload.querySelector('.muted');if(note)note.textContent='Selecione quantas fotos quiser. A primeira será usada como capa.'}
+    input.onchange=e=>{
+      const picked=[...e.target.files];
+      if(Array.isArray(window.pendingFiles))window.pendingFiles.push(...picked);
+      else if(typeof pendingFiles!=='undefined')pendingFiles.push(...picked);
+      if(typeof window.renderPhotos==='function')window.renderPhotos();
+      else if(typeof renderPhotos==='function')renderPhotos();
+      e.target.value='';
+    };
+  }
+
+  function installAdminPromoField(){
+    const price=document.getElementById('price');if(!price||document.getElementById('promoPrice'))return;
+    const holder=price.parentElement;if(!holder)return;
+    const promo=document.createElement('div');promo.innerHTML='<label>Preço promocional <span style="color:#888;font-size:11px">(opcional)</span></label><input class="field" id="promoPrice" placeholder="R$ 109.900"><div style="font-size:11px;color:#bda56c;margin-top:-8px;margin-bottom:12px">Se preenchido, o preço normal aparecerá riscado no site.</div>';holder.insertAdjacentElement('afterend',promo);
+    const originalForm=window.formDataWithImages;if(typeof originalForm==='function'){window.formDataWithImages=function(images){const data=originalForm(images);data.promo_price=(document.getElementById('promoPrice')?.value||'').trim();return data}};
+    const originalEdit=window.editV;if(typeof originalEdit==='function'){window.editV=function(id){originalEdit(id);list().then(all=>{const v=all.find(x=>String(x.id)===String(id)),field=document.getElementById('promoPrice');if(field)field.value=v?.promo_price||'';const brand=document.getElementById('brand');if(brand)brand.dispatchEvent(new Event('change'))}).catch(()=>{})}};
+    const originalClear=window.clearForm;if(typeof originalClear==='function'){window.clearForm=function(){originalClear();const field=document.getElementById('promoPrice');if(field)field.value=''}};
+  }
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{installAdminSmartOptions();installUnlimitedPhotos();installAdminPromoField()},0));
   window.TSVehicles={demo,list,render,configured,client,mainImage,priceHtml};
 })();
