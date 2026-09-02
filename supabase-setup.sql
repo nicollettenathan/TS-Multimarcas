@@ -57,7 +57,7 @@ create table if not exists public.vehicles (
  name text not null default '', version text not null default '', model_year text not null default '',
  fuel text not null default '', color text not null default '', description text not null default '',
  images text[] not null default '{}', promo_price text not null default '', slug text,
- constraint vehicles_max_10_images check(cardinality(images)<=10)
+ constraint vehicles_max_15_images check(cardinality(images)<=15)
 );
 create unique index if not exists vehicles_slug_uidx on public.vehicles(slug) where slug is not null;
 alter table public.vehicles enable row level security;
