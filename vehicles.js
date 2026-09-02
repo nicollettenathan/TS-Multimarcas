@@ -59,9 +59,11 @@
     if(typeof originalEdit==='function'){
       window.editV=function(id){
         originalEdit(id);
-        const v=(window.items||[]).find(x=>String(x.id)===String(id));
-        const field=document.getElementById('promoPrice');
-        if(field) field.value=v?.promo_price||'';
+        list().then(all=>{
+          const v=all.find(x=>String(x.id)===String(id));
+          const field=document.getElementById('promoPrice');
+          if(field) field.value=v?.promo_price||'';
+        }).catch(()=>{});
       };
     }
     const originalClear=window.clearForm;
