@@ -80,7 +80,7 @@
     const currentYear=new Date().getFullYear(),years=[];for(let y=currentYear+1;y>=1980;y--)years.push(String(y));
     attachList(document.getElementById('year'),'vehicleYearOptions',years);attachList(document.getElementById('modelYear'),'vehicleModelYearOptions',years);
     selectToFreeInput('transmission','vehicleTransmissionOptions',['Automático','Manual','CVT','Automatizado','Automático de 6 marchas','Automático de 8 marchas','Automático de 9 marchas']);
-    selectToFreeInput('fuel','vehicleFuelOptions',['Flex','Gasolina','Diesel','Híbrido','Híbrido plug-in','Elétrico','Etanol']);
+    selectToFreeInput('fuel','vehicleFuelOptions',['Gasolina','Álcool / Etanol','Flex','Diesel','Elétrico','Híbrido','Híbrido plug-in','GNV','Gasolina + GNV','Flex + GNV','Diesel + Elétrico']);
     attachList(document.getElementById('color'),'vehicleColorOptions',['Preto','Branco','Prata','Cinza','Vermelho','Azul','Verde','Marrom','Bege','Dourado','Amarelo','Laranja']);
   }
 
